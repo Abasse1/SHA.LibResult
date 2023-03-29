@@ -8,6 +8,7 @@
 	<Version>1.0.0</Version>
 	<Authors>Saindou Houmadi Abasse</Authors>
 	<Product>Result manager</Product>
+	<RepositoryUrl>https://github.com/Abasse1/SHA.LibResult</RepositoryUrl>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 

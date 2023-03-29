@@ -50,6 +50,11 @@ public record Result<T>
     {
         return IsSuccess ? success(Value!) : fail(Exception!);
     }
+
+    public TResult Match<TResult>(Func<TResult> success, Func<Exception, TResult> fail)
+    {
+        return IsSuccess ? success() : fail(Exception!);
+    }
     public Result<TypeToMap> Map<TypeToMap>(Func<T?, TypeToMap> f)
     {
         return IsSuccess ? new Result<TypeToMap>(f(Value)) : new Result<TypeToMap>(Exception!);
