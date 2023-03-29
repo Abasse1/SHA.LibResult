@@ -55,6 +55,15 @@ public record Result<T>
     {
         return IsSuccess ? success() : fail(Exception!);
     }
+
+    public async Task<TResult> MatchAsync<TResult>(Func<T, Task<TResult>> success, Func<Exception, TResult> fail)
+    {
+        return IsSuccess ? await success(Value!) : fail(Exception!);
+    }
+    public async Task<TResult> MatchAsync<TResult>(Func<Task<TResult>> success, Func<Exception, TResult> fail)
+    {
+        return IsSuccess ? await success() : fail(Exception!);
+    }
     public Result<TypeToMap> Map<TypeToMap>(Func<T?, TypeToMap> f)
     {
         return IsSuccess ? new Result<TypeToMap>(f(Value)) : new Result<TypeToMap>(Exception!);
