@@ -8,7 +8,7 @@ public class ResultTests
     public void CreateResult_WithValue_ReturnSuccessResult(Entity1 entity1)
     {
         //Act
-        Result<Entity1> result = new(entity1);
+        Result<Entity1> result = Result<Entity1>.Create(entity1);
 
         //Assert
         Assert.NotNull(result);
@@ -25,7 +25,7 @@ public class ResultTests
         Exception exception = new("Exception was thows");
 
         //Act
-        Result<Entity1> result = new(exception);
+        Result<Entity1> result = Result<Entity1>.Create(exception);
 
         //Assert
         Assert.NotNull(result);

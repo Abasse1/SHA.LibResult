@@ -8,28 +8,34 @@ public enum ResultState
 
 public record Result<T>
 {
-    public ResultState State { get; }
+    public ResultState State { get; private set; }
 
-    public T? Value { get; }
+    public T? Value { get; private set; }
 
-    public Exception? Exception { get; }
+    public Exception? Exception { get; private set; }
 
     private Result()
     {
     }
 
-    public Result(T value)
+    public static Result<T> Create(Exception exception)
     {
-        Value = value;
-        State = ResultState.Success;
-        Exception = null;
+        return new Result<T>
+        {
+            Value = default,
+            State = ResultState.Failed,
+            Exception = exception
+        };
     }
 
-    public Result(Exception exception)
+    public static Result<T> Create(T value)
     {
-        Value = default;
-        State = ResultState.Failed;
-        Exception = exception;
+        return new Result<T>
+        {
+            Value = value,
+            State = ResultState.Success,
+            Exception = null
+        };
     }
 
     public bool IsSuccess => State == ResultState.Success;
@@ -38,7 +44,7 @@ public record Result<T>
 
     public static implicit operator Result<T>(T value)
     {
-        return new(value);
+        return Result<T>.Create(value);
     }
 
     public static implicit operator T(Result<T> result)
@@ -66,6 +72,6 @@ public record Result<T>
     }
     public Result<TypeToMap> Map<TypeToMap>(Func<T?, TypeToMap> f)
     {
-        return IsSuccess ? new Result<TypeToMap>(f(Value)) : new Result<TypeToMap>(Exception!);
+        return IsSuccess ? Result<TypeToMap>.Create(f(Value)) : Result<TypeToMap>.Create(Exception!);
     }
 }
